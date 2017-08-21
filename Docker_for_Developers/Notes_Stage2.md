@@ -1,6 +1,6 @@
 # Stage 2
 
-## 1.0 Docker registry for Linux Part 1
+## 1.0 Part 1 Docker registry for Linux
 
 A **registry** is a service for storing and accessing Docker images.
 
@@ -66,3 +66,60 @@ docker push 127.0.0.1:5000/hello-world
 ```
 
 Now we can destroy and create a new container with the same mapping `$(pwd)/registry-data` to `/var/lib/registry` without loosing data. Next, I'll use SSL to make the registry secure.
+
+## 2.0 Part 2 Running a Secured Registry Container in Linux
+
+Now well create our own SSL certificate inside a `certs` directory.
+
+```
+mkdir -p certs 
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt
+------
+Country Name (2 letter code) [AU]:CO
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:xXDrackleroXx
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:127.0.0.1
+Email Address []:
+```
+
+And now we have to pass this certificate (domain.crt) to the docker daemon.
+
+```
+mkdir /etc/docker/certs.d
+mkdir /etc/docker/certs.d/127.0.0.1:5000 
+cp $(pwd)/certs/domain.crt /etc/docker/certs.d/127.0.0.1:5000/ca.crt
+```
+
+An then we restart the daemon with `systemctl restart docker`.
+
+Now we can run the registry with the volume `registry-data` and the certificates.
+
+```
+docker run -d -p 5000:5000 --name registry \
+  --restart unless-stopped \
+  -v $(pwd)/registry-data:/var/lib/registry -v $(pwd)/certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  registry
+```
+
+Where:
+- **--restart unless-stopped** restarts the container when it exits so it's always available.
+- **-v $(pwd)/certs:/certs** mounts the volume for certificates.
+- **-e REGISTRY_HTTP_TLS_CERTIFICATE** location for the SSL certificate file
+- **-e REGISTRY_HTTP_TLS_KEY** location of the SSL key file
+
+## 2.1 Accessing the Secure Registry
+
+Now we can publish and pull images to this secure registry.
+
+```
+docker pull hello-world
+docker tag hello-world 127.0.0.1:5000/hello-world
+docker push 127.0.0.1:5000/hello-world
+docker pull 127.0.0.1:5000/hello-world
+```
+
+# 3.0 Part 3 Using Basic Authentication with a Secured Registry in Linux
