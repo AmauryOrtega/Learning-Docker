@@ -123,3 +123,44 @@ docker pull 127.0.0.1:5000/hello-world
 ```
 
 # 3.0 Part 3 Using Basic Authentication with a Secured Registry in Linux
+
+We create a `auth` directory to store usernames and encrypted passwords using Apache's httpasswd.
+
+```
+mkdir auth
+docker run --entrypoint htpasswd registry:latest -Bbn moby gordon > auth/htpasswd
+```
+
+This will create a user called *moby* with password gordon
+
+# 3.1 Running an Authenticated Secure Registry
+
+This process is similar to adding SSL. This time we have to get access to the `htpasswd` in the container using environment variables.
+
+```
+docker run -d -p 5000:5000 --name registry \
+  --restart unless-stopped \
+  -v $(pwd)/registry-data:/var/lib/registry \
+  -v $(pwd)/certs:/certs \
+  -v $(pwd)/auth:/auth \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  -e REGISTRY_AUTH=htpasswd \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e "REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd" \
+  registry
+```
+
+Where:
+- **-v $(pwd)/auth:/auth** mounts the folder `auth` into the containers.
+- **-e REGISTRY_AUTH=htpasswd** Use `htpasswd` for authentication method.
+- **-e REGISTRY_AUTH_HTPASSWD_REALM='Registry Realm'** specify the authentication realm.
+- **-e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd** location of the `htpasswd` file.
+
+## 3.3 Authenticating with the Registry
+
+Now if we try to pull `127.0.0.1:5000/hello-world` it won't be possible  because the client is not using any kind of authentication. To do so we must login with `docker login 127.0.0.1:5000`
+
+# Conclusion
+
+Docker Registry is a free, open-source application for storing and accessing Docker images.
