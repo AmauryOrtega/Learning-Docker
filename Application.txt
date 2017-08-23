@@ -11,14 +11,15 @@ Mr
 
 https://www.linkedin.com/in/amaury-rafael-ortega-camargo-906851133/
 
-Experience level with Docker.
+Experience level with Docker. (100 word max)
 I've been using docker since the beginning of 2017, I came across docker searching for a quick and easy solution to deploy simple mqtt, IRC or HTTP server. Since then I've been able to make my own images and read others people work and adapt it to my needs, my major experience comes from using turnkey linux's images which provide the expansion of a debian server with the ease of sharing my environment with my co workers in development.
 
-Please tell us why do you want to attend DockerCon Europe?
-I want to attend DockerCon to gain more knowledge about DevOps and apply them to my career's final year project which is about providing an infrastructure and workflow in my college so that system engineering's students know what kind of environment developers use outside the academic world. Beside that, I've been enthusiast in tech since I was 10 years old and as I got older I was interested in a career in SysAdmin but I wanted to develop new software, I wanted that merge between development and dealing with servers and infrastructure; a couple years ago I saw the word DevOps and intermediately fell in love, what I was looking for finally had a name in my mind, after weeks of reading I wanted to get practical and no matter where I looked, Docker was there, even tough DockerCon won't give me all knowledge there is to know about Docker, It will give me a chance to meet people beyond my usual reach and see how they use it to improve their communities.
+Please tell us why do you want to attend DockerCon Europe? (200 word max)
+**REDUCIR**
+My college is public so the focus of the career is focused on research and work opportunities but I noticed there is a big lack of knowledge in the workflow a developer should follow, I want to fill that gap but I don't want to do it for myself. I want to attend DockerCon to gain more foreign knowledge about DevOps and apply them to my career's final year project which hopes to provide an infrastructure and workflow in my college so others system engineering's students know a CI/CD environment that worldwide developers use while working in a software development company. Beside that, I've been enthusiast in tech since I was 10 years old and as I got older I was interested in a career related to SysAdmin but I wanted to do software development so I was confused for a while, I wanted to merge development, SysAdmin, networking and infrastructure; a couple years ago I saw the word DevOps and intermediately fell in love, after weeks of reading I wanted to set up a development, staging and production environment for my own and no matter where I looked, Docker was the way to go. Even tough I know DockerCon won't give me all the knowledge there is to know about Docker for this application, It will give me a chance to meet people beyond my usual reach and see how they use it to improve their workflow.
 
-What do you hope to learn at DockerCon Europe?
-
+What do you hope to learn at DockerCon Europe? (200 word max)
+I want to know how Docker improves CI/CD, from the developer and SysAdmin/Ops perspective, the workflow in software development. I want to go deeper into what options Docker CLI, Docker daemon and its API offers so I can use Docker at its full potential. I want to see how people use Docker in their environment and which difficulties they got into and how they solve it. I want to see the challenges of making Windows containers and how I should transfer my Windows infrastructure to containers using docker and what kind of mentality I should have in this process.
 
 Why do you think you should be selected for the DockerCon Diversity Scholarship Program?
 
